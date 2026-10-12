@@ -4,85 +4,265 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tetínem – průvodce &amp; příběhy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#f1e6c8; --ink:#34261a; --rust:#8c4628; --line:#cdb98c; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 Georgia, "Times New Roman", serif; }
-  main { max-width:560px; margin:0 auto; padding:32px 16px 48px; text-align:center; }
-  h1 { font-size:30px; letter-spacing:2px; margin:0; }
-  .sub { letter-spacing:3px; font-size:13px; margin-bottom:24px; }
-  .place { border:2px solid var(--line); border-radius:12px; background:#fbf4e2; padding:16px; margin:20px 0; text-align:left; }
-  .place h2 { margin:0 0 6px; color:var(--rust); font-size:22px; }
-  .stores { display:flex; flex-direction:column; gap:10px; margin:24px 0; }
-  .stores a { display:block; padding:14px; border-radius:12px; background:var(--ink); color:#fff; text-decoration:none; font-weight:bold; }
-  .stores a.soon { opacity:.55; pointer-events:none; }
-  nav { display:flex; justify-content:center; gap:8px; margin-bottom:16px; }
-  nav button { font-size:22px; background:none; border:1px solid var(--line); border-radius:20px; padding:2px 10px; cursor:pointer; }
-  .small { font-size:13px; opacity:.75; }
+  :root { --paper:#eadbb4; --paper2:#f3e8cc; --ink:#34261a; --faded:#6b5440; --rust:#8c4628; --river:#3c6e9a; --line:#cdb98c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper2); color:var(--ink); font:17px/1.55 "Courier Prime", "Courier New", monospace; }
+  main { max-width:620px; margin:0 auto; padding:0 0 48px; }
+  .top { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; }
+  .brand { font-family:"Special Elite", serif; font-size:22px; letter-spacing:2px; color:var(--river); text-decoration:none; }
+  .brand small { display:block; font-size:10px; letter-spacing:3px; }
+  .langs button { font-size:22px; background:none; border:1px solid transparent; border-radius:20px; padding:0 4px; cursor:pointer; }
+  .langs button.on { border-color:var(--line); background:#fff8; }
+  .gallery { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:0; background:#0001; }
+  .gallery img { width:100%; flex:0 0 100%; height:280px; object-fit:cover; scroll-snap-align:center; }
+  .gallery:empty { display:none; }
+  .wrap { padding:0 16px; }
+  h1 { font-family:"Special Elite", serif; font-size:30px; line-height:1.15; margin:18px 0 6px; color:var(--ink); }
+  .intro { font-size:18px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:16px; margin:18px 0;
+          box-shadow:0 1px 0 #fff8 inset, 0 2px 6px #0001; }
+  .kind { font-family:"Special Elite", serif; color:var(--rust); letter-spacing:1.5px; font-size:14px; text-transform:uppercase; }
+  .story h2 { font-family:"Special Elite", serif; font-size:23px; margin:4px 0 8px; }
+  .story .text { white-space:pre-line; }
+  .story.legend .text { font-style:italic; }
+  .btn { display:inline-flex; align-items:center; gap:8px; border:0; border-radius:24px; padding:11px 18px; font:inherit; font-weight:700;
+         cursor:pointer; text-decoration:none; }
+  .btn.rust { background:var(--rust); color:#fff; }
+  .btn.blue { background:var(--river); color:#fff; }
+  .btn.ghost { background:transparent; color:var(--ink); border:1.5px solid var(--faded); }
+  audio { width:100%; margin-top:8px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+  .info dt { font-weight:700; margin-top:6px; }
+  .info dd { margin:0; }
+  .app { text-align:center; }
+  .app .stores { display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+  .app .stores a { display:block; padding:13px; border-radius:12px; background:var(--ink); color:#fff; text-decoration:none; font-weight:700; }
+  .app .stores a.soon { opacity:.5; pointer-events:none; }
+  .small { font-size:13px; color:var(--faded); }
+  .quiz .opt { display:block; width:100%; text-align:left; margin:8px 0; padding:12px 14px; border-radius:10px; border:1.5px solid var(--faded);
+               background:#fff7; font:inherit; color:var(--ink); cursor:pointer; }
+  .quiz .opt.ok { background:#3e8e4155; border-color:#2e6e31; }
+  .quiz .opt.bad { background:#b23b2e33; }
+  .quiz h2 { font-family:"Special Elite", serif; color:var(--rust); font-size:22px; margin:0 0 8px; }
+  .stamp { width:110px; height:110px; border:4px solid var(--rust); border-radius:50%; margin:12px auto; display:grid; place-items:center;
+           color:var(--rust); font-family:"Special Elite", serif; font-size:18px; transform:rotate(-8deg); }
+  .msg { text-align:center; padding:40px 16px; }
+  footer { text-align:center; margin-top:24px; }
+  footer a { color:var(--faded); }
 </style>
 </head>
 <body>
 <main>
-  <nav>
-    <button data-l="cs" aria-label="Čeština">🇨🇿</button><button data-l="en" aria-label="English">🇬🇧</button>
-    <button data-l="de" aria-label="Deutsch">🇩🇪</button><button data-l="es" aria-label="Español">🇪🇸</button>
-  </nav>
-  <h1>TETÍNEM</h1>
-  <div class="sub" id="sub"></div>
-  <div class="place" id="place" hidden><h2 id="pname"></h2><div id="pintro"></div></div>
-  <p id="lead"></p>
-  <div class="stores">
-    <!-- Po zveřejnění v obchodech sem doplnit odkazy a odebrat class="soon" -->
-    <a id="ios" class="soon" href="#">App Store</a>
-    <a id="android" class="soon" href="#">Google Play</a>
+  <div class="top">
+    <a class="brand" href="#" id="home">TETÍNEM<small id="sub"></small></a>
+    <div class="langs" id="langs"></div>
   </div>
-  <p class="small" id="soon"></p>
-  <p class="small"><a id="privacy" href="/tetinem-admin/privacy/"></a></p>
+  <div id="view"><p class="msg">…</p></div>
+  <footer class="small"><a id="privacy" href="https://wenoush.github.io/red-apps/soukromi/tetinem-zasady-ochrany-udaju.html"></a></footer>
 </main>
 <script>
 (function () {
-  var T = {
-    cs: { sub: 'PRŮVODCE & PŘÍBĚHY', lead: 'Stáhněte si aplikaci Tetínem a naskenujte kód v ní – příběh tohoto místa se hned spustí.', soon: 'Aplikace bude brzy k dispozici.', privacy: 'Ochrana soukromí', notfound: 'Stránka nenalezena.' },
-    en: { sub: 'GUIDE & STORIES', lead: 'Get the Tetínem app and scan the code in it – the story of this place starts right away.', soon: 'The app is coming soon.', privacy: 'Privacy policy', notfound: 'Page not found.' },
-    de: { sub: 'FÜHRER & GESCHICHTEN', lead: 'Laden Sie die App Tetínem herunter und scannen Sie den Code darin – die Geschichte dieses Ortes startet sofort.', soon: 'Die App ist bald verfügbar.', privacy: 'Datenschutz', notfound: 'Seite nicht gefunden.' },
-    es: { sub: 'GUÍA E HISTORIAS', lead: 'Descargue la app Tetínem y escanee el código en ella: la historia de este lugar empezará enseguida.', soon: 'La aplicación estará disponible pronto.', privacy: 'Privacidad', notfound: 'Página no encontrada.' }
-  };
+  // Po zveřejnění aplikace sem doplnit odkazy do obchodů:
+  var STORE_IOS = '';
+  var STORE_ANDROID = '';
+
   var SB = 'https://kpjnokcqobbykdjgfatu.supabase.co';
   var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtwam5va2Nxb2JieWtkamdmYXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MTAyODAsImV4cCI6MjEwNzI4NjI4MH0.OkXL_A0Bq5T6xwE17KY6LNEpWQdONDKyhHnY3pTbMF4';
+  var LANGS = { cs: '🇨🇿', en: '🇬🇧', de: '🇩🇪', es: '🇪🇸' };
+  var TTS = { cs: 'cs-CZ', en: 'en-GB', de: 'de-DE', es: 'es-ES' };
+  var T = {
+    cs: { sub:'PRŮVODCE & PŘÍBĚHY', story:'Příběh', legend:'Pověst', fact:'Zajímavost', listen:'Poslechnout', stop:'Zastavit', read:'Přečíst nahlas',
+          hours:'Otevírací doba', tip:'Tip', nav:'Navigovat', map:'Zobrazit na mapě', appTitle:'Celý průvodce v telefonu',
+          appText:'V aplikaci Tetínem najdete mapu, trasy, audioprůvodce, který vypráví sám, a hru pro děti. Funguje i bez signálu.',
+          soon:'Aplikace bude brzy v obchodech.', notfound:'Toto místo jsme nenašli.', privacy:'Ochrana soukromí',
+          quizTitle:'Otázka pro malé objevitele', right:'Správně!', wrong:'Tohle to není. Zkus to znovu!',
+          stampApp:'Razítka do sbírky se ukládají v aplikaci Tetínem.', toPlace:'Více o místě', loading:'Načítám…' },
+    en: { sub:'GUIDE & STORIES', story:'Story', legend:'Legend', fact:'Curiosity', listen:'Listen', stop:'Stop', read:'Read aloud',
+          hours:'Opening hours', tip:'Tip', nav:'Navigate', map:'Show on map', appTitle:'The whole guide on your phone',
+          appText:'The Tetínem app has a map, walking routes, an audio guide that starts by itself and a game for kids. Works without signal.',
+          soon:'The app is coming to the stores soon.', notfound:'We could not find this place.', privacy:'Privacy policy',
+          quizTitle:'A question for young explorers', right:'Correct!', wrong:'Not quite. Try again!',
+          stampApp:'Stamps for your collection are saved in the Tetínem app.', toPlace:'More about this place', loading:'Loading…' },
+    de: { sub:'FÜHRER & GESCHICHTEN', story:'Geschichte', legend:'Sage', fact:'Wissenswertes', listen:'Anhören', stop:'Stopp', read:'Vorlesen',
+          hours:'Öffnungszeiten', tip:'Tipp', nav:'Navigieren', map:'Auf der Karte zeigen', appTitle:'Der ganze Führer auf dem Telefon',
+          appText:'Die App Tetínem bietet Karte, Wanderrouten, einen Audioguide, der von selbst erzählt, und ein Spiel für Kinder. Funktioniert auch ohne Signal.',
+          soon:'Die App ist bald in den Stores.', notfound:'Dieser Ort wurde nicht gefunden.', privacy:'Datenschutz',
+          quizTitle:'Eine Frage für kleine Entdecker', right:'Richtig!', wrong:'Nicht ganz. Versuch es noch einmal!',
+          stampApp:'Stempel für die Sammlung werden in der App Tetínem gespeichert.', toPlace:'Mehr über diesen Ort', loading:'Wird geladen…' },
+    es: { sub:'GUÍA E HISTORIAS', story:'Historia', legend:'Leyenda', fact:'Curiosidad', listen:'Escuchar', stop:'Parar', read:'Leer en voz alta',
+          hours:'Horario', tip:'Consejo', nav:'Navegar', map:'Ver en el mapa', appTitle:'Toda la guía en su teléfono',
+          appText:'La app Tetínem tiene mapa, rutas, una audioguía que narra sola y un juego para niños. Funciona sin señal.',
+          soon:'La aplicación llegará pronto a las tiendas.', notfound:'No hemos encontrado este lugar.', privacy:'Privacidad',
+          quizTitle:'Una pregunta para pequeños exploradores', right:'¡Correcto!', wrong:'Casi. ¡Inténtalo otra vez!',
+          stampApp:'Los sellos de la colección se guardan en la app Tetínem.', toPlace:'Más sobre este lugar', loading:'Cargando…' }
+  };
+
   var parts = location.pathname.split('/').filter(Boolean);
   var qi = parts.indexOf('q');
-  var code = qi >= 0 ? parts[qi + 1] : null;
-  var lang = (navigator.language || 'cs').slice(0, 2);
+  var raw = qi >= 0 ? decodeURIComponent(parts[qi + 1] || '') : '';
+  var quizMode = raw.indexOf('kviz-') === 0;
+  var code = quizMode ? raw.slice(5) : raw;
+  var lang = (localStorageGet('lang') || navigator.language || 'cs').slice(0, 2);
   if (!T[lang]) lang = lang === 'sk' ? 'cs' : 'en';
+  var content = null;
 
-  function show(l) {
-    lang = l;
-    document.documentElement.lang = l;
-    var t = T[l];
-    document.getElementById('sub').textContent = t.sub;
-    document.getElementById('lead').textContent = code ? t.lead : t.notfound;
-    document.getElementById('soon').textContent = t.soon;
-    document.getElementById('privacy').textContent = t.privacy;
-    if (code) loadPlace();
+  function localStorageGet(k) { try { return localStorage.getItem('tetinem_' + k); } catch (e) { return null; } }
+  function localStorageSet(k, v) { try { localStorage.setItem('tetinem_' + k, v); } catch (e) {} }
+  function el(tag, attrs, children) {
+    var e = document.createElement(tag);
+    for (var k in (attrs || {})) { if (k === 'text') e.textContent = attrs[k]; else if (k === 'on') e.addEventListener('click', attrs[k]); else e.setAttribute(k, attrs[k]); }
+    (children || []).forEach(function (c) { if (c) e.appendChild(c); });
+    return e;
+  }
+  function t(k) { return T[lang][k]; }
+
+  function drawLangs() {
+    var box = document.getElementById('langs'); box.innerHTML = '';
+    Object.keys(LANGS).forEach(function (l) {
+      box.appendChild(el('button', { text: LANGS[l], 'class': l === lang ? 'on' : '', 'aria-label': l, on: function () {
+        lang = l; localStorageSet('lang', l); speechSynthesis && speechSynthesis.cancel(); load();
+      } }));
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('sub').textContent = t('sub');
+    document.getElementById('privacy').textContent = t('privacy');
   }
 
-  function loadPlace() {
+  function load() {
+    drawLangs();
+    var view = document.getElementById('view');
+    view.innerHTML = ''; view.appendChild(el('p', { 'class': 'msg', text: t('loading') }));
     fetch(SB + '/rest/v1/rpc/get_content', {
       method: 'POST',
       headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ lang: lang })
-    }).then(function (r) { return r.json(); }).then(function (c) {
-      var p = (c.places || []).filter(function (x) { return x.qr === code || x.id === code; })[0];
-      if (!p) return;
-      document.getElementById('pname').textContent = p.name;
-      document.getElementById('pintro').textContent = p.intro || '';
-      document.getElementById('place').hidden = false;
-    }).catch(function () {});
+    }).then(function (r) { return r.json(); }).then(function (c) { content = c; render(); })
+      .catch(function () { view.innerHTML = ''; view.appendChild(el('p', { 'class': 'msg', text: t('notfound') })); });
   }
 
-  document.querySelectorAll('nav button').forEach(function (b) {
-    b.addEventListener('click', function () { show(b.getAttribute('data-l')); });
-  });
-  show(lang);
+  function findPlace() {
+    return (content.places || []).filter(function (p) { return code && (p.qr === code || p.id === code); })[0];
+  }
+
+  function appCard() {
+    var stores = el('div', { 'class': 'stores' });
+    stores.appendChild(el('a', { href: STORE_IOS || '#', 'class': STORE_IOS ? '' : 'soon', text: 'App Store' }));
+    stores.appendChild(el('a', { href: STORE_ANDROID || '#', 'class': STORE_ANDROID ? '' : 'soon', text: 'Google Play' }));
+    return el('div', { 'class': 'card app' }, [
+      el('div', { 'class': 'kind', text: 'Tetínem' }),
+      el('h2', { text: t('appTitle'), style: 'font-family:"Special Elite",serif;margin:6px 0' }),
+      el('p', { text: t('appText') }),
+      stores,
+      (STORE_IOS || STORE_ANDROID) ? null : el('p', { 'class': 'small', text: t('soon') })
+    ]);
+  }
+
+  var speaking = null;
+  function speakButton(text) {
+    var b = el('button', { 'class': 'btn ghost', text: '🔊 ' + t('read') });
+    b.addEventListener('click', function () {
+      if (!('speechSynthesis' in window)) return;
+      if (speaking === b) { speechSynthesis.cancel(); speaking = null; b.textContent = '🔊 ' + t('read'); return; }
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text); u.lang = TTS[lang];
+      u.onend = function () { speaking = null; b.textContent = '🔊 ' + t('read'); };
+      speaking = b; b.textContent = '⏹ ' + t('stop'); speechSynthesis.speak(u);
+    });
+    return b;
+  }
+
+  function renderPlace(p) {
+    var view = document.getElementById('view'); view.innerHTML = '';
+    var gal = el('div', { 'class': 'gallery' });
+    (p.photos || []).forEach(function (ph) { if (ph.url) gal.appendChild(el('img', { src: ph.url, alt: ph.caption || p.name, loading: 'lazy' })); });
+    view.appendChild(gal);
+    var w = el('div', { 'class': 'wrap' });
+    w.appendChild(el('h1', { text: p.name }));
+    if (p.intro) w.appendChild(el('p', { 'class': 'intro', text: p.intro }));
+
+    var nav = el('div', { 'class': 'row' }, [
+      el('a', { 'class': 'btn blue', href: 'https://mapy.com/fnc/v1/route?end=' + p.lng + ',' + p.lat + '&routeType=foot_hiking', target: '_blank', text: '🚶 ' + t('nav') }),
+      el('a', { 'class': 'btn ghost', href: 'https://mapy.com/fnc/v1/showmap?center=' + p.lng + ',' + p.lat + '&zoom=17&marker=true', target: '_blank', text: '🗺 ' + t('map') })
+    ]);
+    w.appendChild(nav);
+
+    var stories = (content.stories || []).filter(function (s) { return s.placeId === p.id; });
+    stories.forEach(function (s) {
+      var kind = s.kind === 'povest' ? t('legend') : s.kind === 'zajimavost' ? t('fact') : t('story');
+      var card = el('div', { 'class': 'card story' + (s.kind === 'povest' ? ' legend' : '') }, [
+        el('div', { 'class': 'kind', text: '— ' + kind + ' —' }),
+        el('h2', { text: s.title }),
+        s.intro ? el('p', { text: s.intro, style: 'font-style:italic' }) : null
+      ]);
+      if (s.audio) card.appendChild(el('audio', { controls: '', preload: 'none', src: s.audio }));
+      else card.appendChild(speakButton(s.title + '. ' + (s.intro || '') + ' ' + (s.text || '')));
+      card.appendChild(el('p', { 'class': 'text', text: s.text || '' }));
+      w.appendChild(card);
+    });
+
+    if (p.quiz) {
+      w.appendChild(el('div', { 'class': 'row' }, [el('a', { 'class': 'btn rust', href: '/tetinem-admin/q/kviz-' + (p.qr || p.id), text: '🏆 ' + t('quizTitle') })]));
+    }
+    if (p.openingHours || p.tip) {
+      var dl = el('dl', { 'class': 'info card' });
+      if (p.openingHours) { dl.appendChild(el('dt', { text: t('hours') })); dl.appendChild(el('dd', { text: p.openingHours })); }
+      if (p.tip) { dl.appendChild(el('dt', { text: t('tip') })); dl.appendChild(el('dd', { text: p.tip })); }
+      w.appendChild(dl);
+    }
+    w.appendChild(appCard());
+    view.appendChild(w);
+    document.title = p.name + ' – Tetínem';
+  }
+
+  function renderQuiz(p) {
+    var view = document.getElementById('view'); view.innerHTML = '';
+    var w = el('div', { 'class': 'wrap' });
+    var q = p.quiz;
+    var card = el('div', { 'class': 'card quiz' }, [el('h2', { text: '🏆 ' + t('quizTitle') }), el('div', { 'class': 'small', text: p.name }),
+      el('p', { text: q.question, style: 'font-weight:700;font-size:19px' })]);
+    var result = el('div');
+    var done = false;
+    (q.options || []).forEach(function (o, i) {
+      var b = el('button', { 'class': 'opt', text: String.fromCharCode(65 + i) + ')  ' + o });
+      b.addEventListener('click', function () {
+        if (done) return;
+        if (i === q.correct) {
+          done = true; b.classList.add('ok'); result.innerHTML = '';
+          result.appendChild(el('div', { 'class': 'stamp', text: 'TETÍN' }));
+          result.appendChild(el('p', { text: t('right') + ' ' + (q.explanation || ''), style: 'font-weight:700' }));
+          result.appendChild(el('p', { 'class': 'small', text: t('stampApp') }));
+        } else {
+          b.classList.add('bad'); result.innerHTML = ''; result.appendChild(el('p', { text: t('wrong'), style: 'font-style:italic' }));
+        }
+      });
+      card.appendChild(b);
+    });
+    card.appendChild(result);
+    w.appendChild(el('h1', { text: p.name }));
+    w.appendChild(card);
+    w.appendChild(el('div', { 'class': 'row' }, [el('a', { 'class': 'btn ghost', href: '/tetinem-admin/q/' + (p.qr || p.id), text: t('toPlace') })]));
+    w.appendChild(appCard());
+    view.appendChild(w);
+    document.title = t('quizTitle') + ' – Tetínem';
+  }
+
+  function render() {
+    var p = findPlace();
+    if (!p) {
+      var view = document.getElementById('view'); view.innerHTML = '';
+      var w = el('div', { 'class': 'wrap' });
+      if (code) w.appendChild(el('p', { 'class': 'msg', text: t('notfound') }));
+      w.appendChild(appCard());
+      view.appendChild(w);
+      return;
+    }
+    if (quizMode && p.quiz) renderQuiz(p); else renderPlace(p);
+  }
+
+  load();
 })();
 </script>
 </body>
