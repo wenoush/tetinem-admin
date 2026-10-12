@@ -74,25 +74,25 @@
   var LANGS = { cs: '🇨🇿', en: '🇬🇧', de: '🇩🇪', es: '🇪🇸' };
   var TTS = { cs: 'cs-CZ', en: 'en-GB', de: 'de-DE', es: 'es-ES' };
   var T = {
-    cs: { sub:'PRŮVODCE & PŘÍBĚHY', story:'Příběh', legend:'Pověst', fact:'Zajímavost', listen:'Poslechnout', stop:'Zastavit', read:'Přečíst nahlas',
+    cs: { teaserCta:'Dočtěte a poslechněte si celý příběh v aplikaci Tetínem', more:'V aplikaci najdete také pověsti, poslech do sluchátek, navigaci k místu a hru pro děti.', quizCta:'Odpověz v aplikaci Tetínem a získej razítko do sbírky!', sub:'PRŮVODCE & PŘÍBĚHY', story:'Příběh', legend:'Pověst', fact:'Zajímavost', listen:'Poslechnout', stop:'Zastavit', read:'Přečíst nahlas',
           hours:'Otevírací doba', tip:'Tip', nav:'Navigovat', map:'Zobrazit na mapě', appTitle:'Celý průvodce v telefonu',
           appText:'V aplikaci Tetínem najdete mapu, trasy, audioprůvodce, který vypráví sám, a hru pro děti. Funguje i bez signálu.',
           soon:'Aplikace bude brzy v obchodech.', notfound:'Toto místo jsme nenašli.', privacy:'Ochrana soukromí',
           quizTitle:'Otázka pro malé objevitele', right:'Správně!', wrong:'Tohle to není. Zkus to znovu!',
           stampApp:'Razítka do sbírky se ukládají v aplikaci Tetínem.', toPlace:'Více o místě', loading:'Načítám…' },
-    en: { sub:'GUIDE & STORIES', story:'Story', legend:'Legend', fact:'Curiosity', listen:'Listen', stop:'Stop', read:'Read aloud',
+    en: { teaserCta:'Read and listen to the whole story in the Tetínem app', more:'The app also has legends, audio for your headphones, navigation to the place and a game for kids.', quizCta:'Answer in the Tetínem app and earn a stamp for your collection!', sub:'GUIDE & STORIES', story:'Story', legend:'Legend', fact:'Curiosity', listen:'Listen', stop:'Stop', read:'Read aloud',
           hours:'Opening hours', tip:'Tip', nav:'Navigate', map:'Show on map', appTitle:'The whole guide on your phone',
           appText:'The Tetínem app has a map, walking routes, an audio guide that starts by itself and a game for kids. Works without signal.',
           soon:'The app is coming to the stores soon.', notfound:'We could not find this place.', privacy:'Privacy policy',
           quizTitle:'A question for young explorers', right:'Correct!', wrong:'Not quite. Try again!',
           stampApp:'Stamps for your collection are saved in the Tetínem app.', toPlace:'More about this place', loading:'Loading…' },
-    de: { sub:'FÜHRER & GESCHICHTEN', story:'Geschichte', legend:'Sage', fact:'Wissenswertes', listen:'Anhören', stop:'Stopp', read:'Vorlesen',
+    de: { teaserCta:'Lesen und hören Sie die ganze Geschichte in der App Tetínem', more:'In der App gibt es auch Sagen, Audio für die Kopfhörer, Navigation zum Ort und ein Spiel für Kinder.', quizCta:'Antworte in der App Tetínem und hol dir einen Stempel für deine Sammlung!', sub:'FÜHRER & GESCHICHTEN', story:'Geschichte', legend:'Sage', fact:'Wissenswertes', listen:'Anhören', stop:'Stopp', read:'Vorlesen',
           hours:'Öffnungszeiten', tip:'Tipp', nav:'Navigieren', map:'Auf der Karte zeigen', appTitle:'Der ganze Führer auf dem Telefon',
           appText:'Die App Tetínem bietet Karte, Wanderrouten, einen Audioguide, der von selbst erzählt, und ein Spiel für Kinder. Funktioniert auch ohne Signal.',
           soon:'Die App ist bald in den Stores.', notfound:'Dieser Ort wurde nicht gefunden.', privacy:'Datenschutz',
           quizTitle:'Eine Frage für kleine Entdecker', right:'Richtig!', wrong:'Nicht ganz. Versuch es noch einmal!',
           stampApp:'Stempel für die Sammlung werden in der App Tetínem gespeichert.', toPlace:'Mehr über diesen Ort', loading:'Wird geladen…' },
-    es: { sub:'GUÍA E HISTORIAS', story:'Historia', legend:'Leyenda', fact:'Curiosidad', listen:'Escuchar', stop:'Parar', read:'Leer en voz alta',
+    es: { teaserCta:'Lea y escuche la historia completa en la app Tetínem', more:'En la app también hay leyendas, audio para sus auriculares, navegación hasta el lugar y un juego para niños.', quizCta:'¡Responde en la app Tetínem y gana un sello para tu colección!', sub:'GUÍA E HISTORIAS', story:'Historia', legend:'Leyenda', fact:'Curiosidad', listen:'Escuchar', stop:'Parar', read:'Leer en voz alta',
           hours:'Horario', tip:'Consejo', nav:'Navegar', map:'Ver en el mapa', appTitle:'Toda la guía en su teléfono',
           appText:'La app Tetínem tiene mapa, rutas, una audioguía que narra sola y un juego para niños. Funciona sin señal.',
           soon:'La aplicación llegará pronto a las tiendas.', notfound:'No hemos encontrado este lugar.', privacy:'Privacidad',
@@ -174,45 +174,42 @@
     return b;
   }
 
+  // Ochutnávka: první 2–3 věty příběhu, celý obsah je v aplikaci.
+  function teaser(text) {
+    var sentences = (text || '').replace(/\s+/g, ' ').match(/[^.!?]+[.!?]+/g) || [text || ''];
+    var out = '';
+    for (var i = 0; i < sentences.length && i < 3; i++) {
+      if (out.length > 220) break;
+      out += sentences[i];
+    }
+    return out.trim() + ' …';
+  }
+
+  function ctaCard(title) {
+    var c = appCard();
+    c.insertBefore(el('h2', { text: title, style: 'font-family:"Special Elite",serif;margin:6px 0;color:#8c4628' }), c.children[1]);
+    c.removeChild(c.children[2]);
+    c.children[2].textContent = t('more');
+    return c;
+  }
+
   function renderPlace(p) {
     var view = document.getElementById('view'); view.innerHTML = '';
-    var gal = el('div', { 'class': 'gallery' });
-    (p.photos || []).forEach(function (ph) { if (ph.url) gal.appendChild(el('img', { src: ph.url, alt: ph.caption || p.name, loading: 'lazy' })); });
-    view.appendChild(gal);
+    var first = (p.photos || []).filter(function (ph) { return ph.url; })[0];
+    if (first) view.appendChild(el('div', { 'class': 'gallery' }, [el('img', { src: first.url, alt: p.name })]));
     var w = el('div', { 'class': 'wrap' });
     w.appendChild(el('h1', { text: p.name }));
     if (p.intro) w.appendChild(el('p', { 'class': 'intro', text: p.intro }));
-
-    var nav = el('div', { 'class': 'row' }, [
-      el('a', { 'class': 'btn blue', href: 'https://mapy.com/fnc/v1/route?end=' + p.lng + ',' + p.lat + '&routeType=foot_hiking', target: '_blank', text: '🚶 ' + t('nav') }),
-      el('a', { 'class': 'btn ghost', href: 'https://mapy.com/fnc/v1/showmap?center=' + p.lng + ',' + p.lat + '&zoom=17&marker=true', target: '_blank', text: '🗺 ' + t('map') })
-    ]);
-    w.appendChild(nav);
-
-    var stories = (content.stories || []).filter(function (s) { return s.placeId === p.id; });
-    stories.forEach(function (s) {
-      var kind = s.kind === 'povest' ? t('legend') : s.kind === 'zajimavost' ? t('fact') : t('story');
-      var card = el('div', { 'class': 'card story' + (s.kind === 'povest' ? ' legend' : '') }, [
-        el('div', { 'class': 'kind', text: '— ' + kind + ' —' }),
+    var s = (content.stories || []).filter(function (x) { return x.placeId === p.id && x.kind !== 'povest'; })[0]
+         || (content.stories || []).filter(function (x) { return x.placeId === p.id; })[0];
+    if (s) {
+      w.appendChild(el('div', { 'class': 'card story' }, [
+        el('div', { 'class': 'kind', text: '— ' + (s.kind === 'povest' ? t('legend') : t('story')) + ' —' }),
         el('h2', { text: s.title }),
-        s.intro ? el('p', { text: s.intro, style: 'font-style:italic' }) : null
-      ]);
-      if (s.audio) card.appendChild(el('audio', { controls: '', preload: 'none', src: s.audio }));
-      else card.appendChild(speakButton(s.title + '. ' + (s.intro || '') + ' ' + (s.text || '')));
-      card.appendChild(el('p', { 'class': 'text', text: s.text || '' }));
-      w.appendChild(card);
-    });
-
-    if (p.quiz) {
-      w.appendChild(el('div', { 'class': 'row' }, [el('a', { 'class': 'btn rust', href: '/tetinem-admin/q/kviz-' + (p.qr || p.id), text: '🏆 ' + t('quizTitle') })]));
+        el('p', { 'class': 'text', text: teaser(s.text || s.intro) })
+      ]));
     }
-    if (p.openingHours || p.tip) {
-      var dl = el('dl', { 'class': 'info card' });
-      if (p.openingHours) { dl.appendChild(el('dt', { text: t('hours') })); dl.appendChild(el('dd', { text: p.openingHours })); }
-      if (p.tip) { dl.appendChild(el('dt', { text: t('tip') })); dl.appendChild(el('dd', { text: p.tip })); }
-      w.appendChild(dl);
-    }
-    w.appendChild(appCard());
+    w.appendChild(ctaCard('📖 ' + t('teaserCta')));
     view.appendChild(w);
     document.title = p.name + ' – Tetínem';
   }
@@ -223,28 +220,13 @@
     var q = p.quiz;
     var card = el('div', { 'class': 'card quiz' }, [el('h2', { text: '🏆 ' + t('quizTitle') }), el('div', { 'class': 'small', text: p.name }),
       el('p', { text: q.question, style: 'font-weight:700;font-size:19px' })]);
-    var result = el('div');
-    var done = false;
     (q.options || []).forEach(function (o, i) {
-      var b = el('button', { 'class': 'opt', text: String.fromCharCode(65 + i) + ')  ' + o });
-      b.addEventListener('click', function () {
-        if (done) return;
-        if (i === q.correct) {
-          done = true; b.classList.add('ok'); result.innerHTML = '';
-          result.appendChild(el('div', { 'class': 'stamp', text: 'TETÍN' }));
-          result.appendChild(el('p', { text: t('right') + ' ' + (q.explanation || ''), style: 'font-weight:700' }));
-          result.appendChild(el('p', { 'class': 'small', text: t('stampApp') }));
-        } else {
-          b.classList.add('bad'); result.innerHTML = ''; result.appendChild(el('p', { text: t('wrong'), style: 'font-style:italic' }));
-        }
-      });
-      card.appendChild(b);
+      card.appendChild(el('div', { 'class': 'opt', text: String.fromCharCode(65 + i) + ')  ' + o, style: 'cursor:default' }));
     });
-    card.appendChild(result);
+    card.appendChild(el('div', { 'class': 'stamp', text: '?' }));
     w.appendChild(el('h1', { text: p.name }));
     w.appendChild(card);
-    w.appendChild(el('div', { 'class': 'row' }, [el('a', { 'class': 'btn ghost', href: '/tetinem-admin/q/' + (p.qr || p.id), text: t('toPlace') })]));
-    w.appendChild(appCard());
+    w.appendChild(ctaCard('🏆 ' + t('quizCta')));
     view.appendChild(w);
     document.title = t('quizTitle') + ' – Tetínem';
   }
