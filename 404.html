@@ -61,7 +61,7 @@
     <div class="langs" id="langs"></div>
   </div>
   <div id="view"><p class="msg">…</p></div>
-  <footer class="small"><a id="privacy" href="https://wenoush.github.io/red-apps/soukromi/tetinem-zasady-ochrany-udaju.html"></a></footer>
+  <footer class="small"><a id="privacy" href="https://wenoush.github.io/red-apps/soukromi/tetinem-zasady-ochrany-udaju.html"></a><span id="ainote"></span></footer>
 </main>
 <script>
 (function () {
@@ -71,8 +71,8 @@
 
   var SB = 'https://kpjnokcqobbykdjgfatu.supabase.co';
   var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtwam5va2Nxb2JieWtkamdmYXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MTAyODAsImV4cCI6MjEwNzI4NjI4MH0.OkXL_A0Bq5T6xwE17KY6LNEpWQdONDKyhHnY3pTbMF4';
-  var LANGS = { cs: '🇨🇿', en: '🇬🇧', de: '🇩🇪', es: '🇪🇸' };
-  var TTS = { cs: 'cs-CZ', en: 'en-GB', de: 'de-DE', es: 'es-ES' };
+  var LANGS = { cs: '🇨🇿', en: '🇬🇧', de: '🇩🇪', es: '🇪🇸', pl: '🇵🇱', fr: '🇫🇷', uk: '🇺🇦' };
+  var TTS = { cs: 'cs-CZ', en: 'en-GB', de: 'de-DE', es: 'es-ES', pl: 'pl-PL', fr: 'fr-FR', uk: 'uk-UA' };
   var T = {
     cs: { teaserCta:'Dočtěte a poslechněte si celý příběh v aplikaci Tetínem', more:'V aplikaci najdete také pověsti, poslech do sluchátek, navigaci k místu a hru pro děti.', quizCta:'Odpověz v aplikaci Tetínem a získej razítko do sbírky!', sub:'PRŮVODCE & PŘÍBĚHY', story:'Příběh', legend:'Pověst', fact:'Zajímavost', listen:'Poslechnout', stop:'Zastavit', read:'Přečíst nahlas',
           hours:'Otevírací doba', tip:'Tip', nav:'Navigovat', map:'Zobrazit na mapě', appTitle:'Celý průvodce v telefonu',
@@ -85,19 +85,43 @@
           appText:'The Tetínem app has a map, walking routes, an audio guide that starts by itself and a game for kids. Works without signal.',
           soon:'The app is coming to the stores soon.', notfound:'We could not find this place.', privacy:'Privacy policy',
           quizTitle:'A question for young explorers', right:'Correct!', wrong:'Not quite. Try again!',
-          stampApp:'Stamps for your collection are saved in the Tetínem app.', toPlace:'More about this place', loading:'Loading…' },
+          stampApp:'Stamps for your collection are saved in the Tetínem app.', toPlace:'More about this place', loading:'Loading…',
+          ai:'Translated with AI, may contain inaccuracies.' },
     de: { teaserCta:'Lesen und hören Sie die ganze Geschichte in der App Tetínem', more:'In der App gibt es auch Sagen, Audio für die Kopfhörer, Navigation zum Ort und ein Spiel für Kinder.', quizCta:'Antworte in der App Tetínem und hol dir einen Stempel für deine Sammlung!', sub:'FÜHRER & GESCHICHTEN', story:'Geschichte', legend:'Sage', fact:'Wissenswertes', listen:'Anhören', stop:'Stopp', read:'Vorlesen',
           hours:'Öffnungszeiten', tip:'Tipp', nav:'Navigieren', map:'Auf der Karte zeigen', appTitle:'Der ganze Führer auf dem Telefon',
           appText:'Die App Tetínem bietet Karte, Wanderrouten, einen Audioguide, der von selbst erzählt, und ein Spiel für Kinder. Funktioniert auch ohne Signal.',
           soon:'Die App ist bald in den Stores.', notfound:'Dieser Ort wurde nicht gefunden.', privacy:'Datenschutz',
           quizTitle:'Eine Frage für kleine Entdecker', right:'Richtig!', wrong:'Nicht ganz. Versuch es noch einmal!',
-          stampApp:'Stempel für die Sammlung werden in der App Tetínem gespeichert.', toPlace:'Mehr über diesen Ort', loading:'Wird geladen…' },
+          stampApp:'Stempel für die Sammlung werden in der App Tetínem gespeichert.', toPlace:'Mehr über diesen Ort', loading:'Wird geladen…',
+          ai:'Mit KI übersetzt, kann Ungenauigkeiten enthalten.' },
     es: { teaserCta:'Lea y escuche la historia completa en la app Tetínem', more:'En la app también hay leyendas, audio para sus auriculares, navegación hasta el lugar y un juego para niños.', quizCta:'¡Responde en la app Tetínem y gana un sello para tu colección!', sub:'GUÍA E HISTORIAS', story:'Historia', legend:'Leyenda', fact:'Curiosidad', listen:'Escuchar', stop:'Parar', read:'Leer en voz alta',
           hours:'Horario', tip:'Consejo', nav:'Navegar', map:'Ver en el mapa', appTitle:'Toda la guía en su teléfono',
           appText:'La app Tetínem tiene mapa, rutas, una audioguía que narra sola y un juego para niños. Funciona sin señal.',
           soon:'La aplicación llegará pronto a las tiendas.', notfound:'No hemos encontrado este lugar.', privacy:'Privacidad',
           quizTitle:'Una pregunta para pequeños exploradores', right:'¡Correcto!', wrong:'Casi. ¡Inténtalo otra vez!',
-          stampApp:'Los sellos de la colección se guardan en la app Tetínem.', toPlace:'Más sobre este lugar', loading:'Cargando…' }
+          stampApp:'Los sellos de la colección se guardan en la app Tetínem.', toPlace:'Más sobre este lugar', loading:'Cargando…',
+          ai:'Traducido con IA, puede contener imprecisiones.' },
+    pl: { teaserCta:'Przeczytaj i posłuchaj całej opowieści w aplikacji Tetínem', more:'W aplikacji znajdziesz też legendy, nagrania do słuchawek, nawigację do miejsca i grę dla dzieci.', quizCta:'Odpowiedz w aplikacji Tetínem i zdobądź pieczątkę do kolekcji!', sub:'PRZEWODNIK I OPOWIEŚCI', story:'Opowieść', legend:'Legenda', fact:'Ciekawostka', listen:'Posłuchaj', stop:'Zatrzymaj', read:'Przeczytaj na głos',
+          hours:'Godziny otwarcia', tip:'Wskazówka', nav:'Nawiguj', map:'Pokaż na mapie', appTitle:'Cały przewodnik w telefonie',
+          appText:'Aplikacja Tetínem ma mapę, trasy, audioprzewodnik, który sam opowiada, i grę dla dzieci. Działa także bez zasięgu.',
+          soon:'Aplikacja wkrótce pojawi się w sklepach.', notfound:'Nie znaleźliśmy tego miejsca.', privacy:'Polityka prywatności',
+          quizTitle:'Pytanie dla małych odkrywców', right:'Dobrze!', wrong:'To nie to. Spróbuj jeszcze raz!',
+          stampApp:'Pieczątki do kolekcji zapisują się w aplikacji Tetínem.', toPlace:'Więcej o tym miejscu', loading:'Wczytywanie…',
+          ai:'Przetłumaczono przy pomocy AI, może zawierać nieścisłości.' },
+    fr: { teaserCta:'Lisez et écoutez toute l’histoire dans l’application Tetínem', more:'L’application propose aussi des légendes, de l’audio pour vos écouteurs, la navigation jusqu’au lieu et un jeu pour les enfants.', quizCta:'Réponds dans l’application Tetínem et gagne un tampon pour ta collection !', sub:'GUIDE ET HISTOIRES', story:'Histoire', legend:'Légende', fact:'Curiosité', listen:'Écouter', stop:'Arrêter', read:'Lire à voix haute',
+          hours:'Horaires d’ouverture', tip:'Astuce', nav:'Y aller', map:'Voir sur la carte', appTitle:'Tout le guide dans votre téléphone',
+          appText:'L’application Tetínem propose une carte, des itinéraires, un audioguide qui raconte tout seul et un jeu pour les enfants. Fonctionne sans réseau.',
+          soon:'L’application arrive bientôt dans les stores.', notfound:'Nous n’avons pas trouvé ce lieu.', privacy:'Confidentialité',
+          quizTitle:'Une question pour les petits explorateurs', right:'Bravo !', wrong:'Ce n’est pas ça. Réessaie !',
+          stampApp:'Les tampons de la collection sont enregistrés dans l’application Tetínem.', toPlace:'En savoir plus sur ce lieu', loading:'Chargement…',
+          ai:'Traduit avec l’IA, peut contenir des imprécisions.' },
+    uk: { teaserCta:'Дочитайте й прослухайте всю історію в застосунку Tetínem', more:'У застосунку також є легенди, аудіо для навушників, навігація до місця й гра для дітей.', quizCta:'Дай відповідь у застосунку Tetínem і отримай печатку до колекції!', sub:'ПУТІВНИК І ІСТОРІЇ', story:'Історія', legend:'Легенда', fact:'Цікавинка', listen:'Слухати', stop:'Зупинити', read:'Прочитати вголос',
+          hours:'Години роботи', tip:'Порада', nav:'Маршрут', map:'Показати на мапі', appTitle:'Увесь путівник у телефоні',
+          appText:'У застосунку Tetínem є мапа, маршрути, аудіогід, який розповідає сам, і гра для дітей. Працює й без зв’язку.',
+          soon:'Застосунок незабаром з’явиться в магазинах.', notfound:'Ми не знайшли це місце.', privacy:'Конфіденційність',
+          quizTitle:'Запитання для юних дослідників', right:'Правильно!', wrong:'Не те. Спробуй ще раз!',
+          stampApp:'Печатки до колекції зберігаються в застосунку Tetínem.', toPlace:'Більше про це місце', loading:'Завантаження…',
+          ai:'Перекладено за допомогою ШІ, можуть траплятися неточності.' }
   };
 
   var parts = location.pathname.split('/').filter(Boolean);
@@ -129,6 +153,8 @@
     document.documentElement.lang = lang;
     document.getElementById('sub').textContent = t('sub');
     document.getElementById('privacy').textContent = t('privacy');
+    var ai = document.getElementById('ainote');
+    if (ai) ai.textContent = T[lang].ai ? ' · ' + T[lang].ai : '';
   }
 
   function load() {
